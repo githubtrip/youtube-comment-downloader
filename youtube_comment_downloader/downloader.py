@@ -103,14 +103,7 @@ def download_comments(youtube_id, sort_by=SORT_BY_RECENT, sleep=.1):
                                   for ncd in search_dict(response, 'nextContinuationData')])
 
         for comment in search_dict(response, 'commentRenderer'):
-            yield {'cid': comment['commentId'],
-                   'text': ''.join([c['text'] for c in comment['contentText'].get('runs', [])]),
-                   'time': comment['publishedTimeText']['runs'][0]['text'],
-                   'author': comment.get('authorText', {}).get('simpleText', ''),
-                   'channel': comment['authorEndpoint']['browseEndpoint'].get('browseId', ''),
-                   'votes': comment.get('voteCount', {}).get('simpleText', '0'),
-                   'photo': comment['authorThumbnail']['thumbnails'][-1]['url'],
-                   'heart': next(search_dict(comment, 'isHearted'), False)}
+            yield {''.join([c['text'] for c in comment['contentText'].get('runs', [])])}
 
         time.sleep(sleep)
 
